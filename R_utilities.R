@@ -26,6 +26,7 @@ mean.ci <- function(x) {
   r
 }
 
+# Show outliers
 outliers <- function(x, cutoff=3) {
 	m <- mean(x)
 	stdev <- sd(x)
@@ -33,6 +34,7 @@ outliers <- function(x, cutoff=3) {
 	return(o)
 }
 
+# Replace outlier values
 outliers_rp <- function(x, cutoff=3) {
 	m <- mean(x)
 	stdev <- sd(x)
@@ -41,7 +43,7 @@ outliers_rp <- function(x, cutoff=3) {
 	return(x)
 }
 
-
+# Returns 95%-CIs of a proportion
 ci_prop <- function(p, n) {
 	if (p > 1)
 		p <- p/100
@@ -51,12 +53,14 @@ ci_prop <- function(p, n) {
 	cat("Confidence interval (95%):", lci, ",", hci)
 }
 
+# A shortcut for outputting a data frame to a csv file
 out <- function(x, round) {
 	if (!missing(round))
 		x <- round(x, digits=round)
 	write.csv(x, file="output.csv")
 }
 
+# A shortcut for outputting a data frame to a csv2 file
 out2 <- function(x, round=NULL) {
 	if (!missing(round))
 		x <- round(x, digits=round)

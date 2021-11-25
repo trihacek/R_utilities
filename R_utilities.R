@@ -118,3 +118,17 @@ asterisks <- function(p) {
     sig <- ""
   return(sig)
 }
+
+# Produces a number with the defined number of decimal places
+nice.num <- function(x, decimal=2, leading.zero=FALSE) {
+  x.string <- as.character(x)
+  x.split <- unlist(strsplit(x.string, split=".", fixed=T))
+  output <- x.split[2]
+  if(length(x.split[2]) < decimal)
+    for(i in (length(x.split[2])+1):decimal)
+      output <- paste0(output, "0")
+  output <- paste0(".", output)
+  if(x < 1 & leading.zero)
+    output <- paste0("0", output)
+  return(output)
+}

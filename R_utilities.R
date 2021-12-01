@@ -128,8 +128,13 @@ nice.num <- function(x, decimal=2, leading.zero=FALSE) {
   x.string <- as.character(x)
   x.split <- unlist(strsplit(x.string, split=".", fixed=T))
   output <- x.split[2]
-  if(nchar(x.split[2]) < decimal)
-    for(i in (nchar(x.split[2])+1):decimal)
+  if(is.na(output))
+	output <- 0
+  length.output <- nchar(x.split[2])
+  if(is.na(length.output))
+    length.output <- 1
+  if(length.output < decimal)
+    for(i in (length.output+1):decimal)
       output <- paste0(output, "0")
   output <- paste0(".", output)
   if(x >= 1)

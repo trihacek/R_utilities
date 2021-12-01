@@ -121,6 +121,9 @@ asterisks <- function(p) {
 
 # Produces a number with the defined number of decimal places
 nice.num <- function(x, decimal=2, leading.zero=FALSE) {
+  negative <- ifelse(x < 0, 1, 0)
+  if(negative)
+	x <- x * -1
   x <- round(x, decimal)
   x.string <- as.character(x)
   x.split <- unlist(strsplit(x.string, split=".", fixed=T))
@@ -133,5 +136,7 @@ nice.num <- function(x, decimal=2, leading.zero=FALSE) {
 	output <- paste0(x.split[1], output)
   if(x < 1 & leading.zero)
     output <- paste0("0", output)
+  if(negative)
+	output <- paste0("-", output)
   return(output)
 }

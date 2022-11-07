@@ -120,7 +120,8 @@ asterisks <- function(p) {
 }
 
 # Produces a number with the defined number of decimal places
-nice.num <- function(x, decimal=2, leading.zero=FALSE) {
+nice.num <- function(x, decimal=2, leading.zero=FALSE, separator=c("dot","comma")) {
+  sep <- ifelse(separator[1] == "dot", ".", ",")
   negative <- ifelse(x < 0, 1, 0)
   if(negative)
 	x <- x * -1

@@ -175,11 +175,8 @@ var.test <- function(x, y, continuous = FALSE){
     sd2 <- sd(y, na.rm=T)
 
     t <- psych::m2t(mean1,mean2,sd1,sd2,n1=length(x),n2=length(y))
-	if(!is.NaN(t$p) {
-		d <- round(t$d,2)
-		output <- paste0('d = ',d,asterisks(t$p))
-	} else
-		output <- NA
+	d <- round(t$d,2)
+	output <- paste0('d = ',d,asterisks(t$p))
   }
   else {
     x <- cbind(
@@ -188,11 +185,8 @@ var.test <- function(x, y, continuous = FALSE){
     )
     p <- prop.test(table(x[,1], x[,2]) )
     n <- sum(!is.na(x)) + sum(!is.na(y))
-	if(!is.NaN(p$p.value) {
-		phi <- sqrt( (p$statistic) / n )
-		output <- paste0('phi = ',nice.num(phi,2,T),asterisks(p$p.value))
-	} else
-		output <- NA
+	phi <- sqrt( (p$statistic) / n )
+	output <- paste0('phi = ',nice.num(phi,2,T),asterisks(p$p.value))
   }
   return(output)
 }

@@ -158,7 +158,7 @@ var.desc <- function(x, continuous = FALSE){
     a <- as.data.frame(perc(x, round = 1))
     output <- ""
     for(i in 1:nrow(a)) {
-      output <- paste0(output, a$x[i],":",a$freq[i]," (",a$perc[i],"%)")
+      output <- paste0(output, a$x[i],":",a$freq[i]," (",nice.num(a$perc[i], decimal = 1),"%)")
       if(i < nrow(a))
         output <- paste0(output, "\n")
     }

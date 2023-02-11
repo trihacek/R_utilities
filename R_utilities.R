@@ -146,3 +146,47 @@ nice.num <- function(x, decimal=2, leading.zero=FALSE, separator=c("dot","comma"
 	output <- paste0("-", output)
   return(output)
 }
+
+var.desc <- function(x, continuous = FALSE){
+  if(continuous) {
+    m <- nice.num(mean(x, na.rm = TRUE), decimal = 1, leading.zero = TRUE)
+    sd <- nice.num(sd(x, na.rm = TRUE), decimal = 1, leading.zero = TRUE)
+    na <- round(100 * sum(is.na(x)) / length(x))
+    output <- paste0("M = ",m," (SD = ",sd,")\nNA = ",na,"%")
+  }
+  else {
+    a <- as.data.frame(perc(x, round = 1))
+    output <- ""
+    for(i in 1:nrow(a)) {
+      output <- paste0(output, a$x[i],":",a$freq[i]," (",a$perc[i],"%)")
+      if(i < nrow(a))
+        output <- paste0(output, "\n")
+    }
+  }
+  return(output)
+}
+
+var.test <- function(x, y, continuous = FALSE){
+  if(continuous) {
+    mean1 <- mean(x, na.rm=T)
+    sd1 <- sd(x, na.rm=T)
+	
+    mean2 <- mean(y, na.rm=T)
+    sd2 <- sd(y, na.rm=T)
+
+    t <- psych::m2t(mean1,mean2,sd1,sd2,n1=length(x),n2=length(y))
+    d <- round(t$d,2)
+    output <- paste0('d = ',d,asterisks(t$p))
+  }
+  else {
+    x <- cbind(
+      c(x,y),
+      c(rep(1,length(x)), rep(0,length(y)))
+    )
+    p <- prop.test(table(x[,1], x[,2]) )
+    n <- sum(!is.na(x)) + sum(!is.na(y))
+    phi <- sqrt( (p$statistic) / n )
+    output <- paste0('phi = ',nice.num(phi,2,T),asterisks(p$p.value))
+  }
+  return(output)
+}

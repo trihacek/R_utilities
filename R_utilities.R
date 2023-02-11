@@ -112,8 +112,8 @@ asterisks <- function(p) {
     sig <- "**"
   else if (p < 0.05)
     sig <- "*"
-  else if (p < 0.1)
-    sig <- "+"
+  #else if (p < 0.1)
+  #  sig <- "+"
   else
     sig <- ""
   return(sig)

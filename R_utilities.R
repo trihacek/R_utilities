@@ -147,10 +147,10 @@ nice.num <- function(x, decimal=2, leading.zero=FALSE, separator=c("dot","comma"
   return(output)
 }
 
-var.desc <- function(x, continuous = FALSE){
+var.desc <- function(x, decimal = 1, continuous = FALSE){
   if(continuous) {
-    m <- nice.num(mean(x, na.rm = TRUE), decimal = 1, leading.zero = TRUE)
-    sd <- nice.num(sd(x, na.rm = TRUE), decimal = 1, leading.zero = TRUE)
+    m <- nice.num(mean(x, na.rm = TRUE), decimal = decimal, leading.zero = TRUE)
+    sd <- nice.num(sd(x, na.rm = TRUE), decimal = decimal, leading.zero = TRUE)
     na <- round(100 * sum(is.na(x)) / length(x))
     output <- paste0("M = ",m," (SD = ",sd,")\nNA = ",na,"%")
   }
@@ -158,7 +158,7 @@ var.desc <- function(x, continuous = FALSE){
     a <- as.data.frame(perc(x, round = 1))
     output <- ""
     for(i in 1:nrow(a)) {
-      output <- paste0(output, a$x[i],":",a$freq[i]," (",nice.num(a$perc[i], decimal = 1),"%)")
+      output <- paste0(output, a$x[i],":",a$freq[i]," (",nice.num(a$perc[i], decimal = decimal),"%)")
       if(i < nrow(a))
         output <- paste0(output, "\n")
     }

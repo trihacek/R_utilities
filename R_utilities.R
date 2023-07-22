@@ -57,7 +57,7 @@ ci_prop <- function(p, n) {
 out <- function(x, round = NULL, type = c("csv","xlsx")) {
 	if (!is.null(round))
 		x <- round(x, digits=round)
-	if(type[1] = "csv"
+	if(type[1] == "csv")
 		write.csv(x, file="output.csv")
 	else
 		openxlsx::write.xlsx(x, file="output.xlsx")
@@ -67,7 +67,7 @@ out <- function(x, round = NULL, type = c("csv","xlsx")) {
 out2 <- function(x, round = NULL, type = c("csv","xlsx")) {
 	if (!is.null(round))
 		x <- round(x, digits=round)
-	if(type[1] = "csv"
+	if(type[1] == "csv")
 		write.csv2(x, file="output.csv")
 	else
 		openxlsx::write.xlsx(x, file="output.xlsx")

@@ -54,17 +54,23 @@ ci_prop <- function(p, n) {
 }
 
 # A shortcut for outputting a data frame to a csv file
-out <- function(x, round) {
-	if (!missing(round))
+out <- function(x, round = NULL, type = c("csv","xlsx")) {
+	if (!is.null(round))
 		x <- round(x, digits=round)
-	write.csv(x, file="output.csv")
+	if(type[1] = "csv"
+		write.csv(x, file="output.csv")
+	else
+		openxlsx::write.xlsx(x, file="output.xlsx")
 }
 
 # A shortcut for outputting a data frame to a csv2 file
-out2 <- function(x, round=NULL) {
-	if (!missing(round))
+out2 <- function(x, round = NULL, type = c("csv","xlsx")) {
+	if (!is.null(round))
 		x <- round(x, digits=round)
-	write.csv2(x, file="output.csv")
+	if(type[1] = "csv"
+		write.csv2(x, file="output.csv")
+	else
+		openxlsx::write.xlsx(x, file="output.xlsx")
 }
 
 hist_with_normal_curve <- function(x, breaks = 24) {
@@ -93,6 +99,33 @@ logisticPseudoR2s <- function(LogModel) {
 	cat("Hosmer and Lemeshow R^2 ", round(R.l, 3), "\n")
 	cat("Cox and Snell R^2 ", round(R.cs, 3), "\n")
 	cat("Nagelkerke R^2 ", round(R.n, 3), "\n")
+}
+
+# Add confidence intervals
+logisticOutput <- function(LogModel) {
+  x <- summary(LogModel)
+  x <- as.matrix(x$coefficients)
+  x <- cbind(x, exp(x[,1]))
+  x <- cbind(x, exp( x[,1]-1.96*x[,2] ))
+  x <- cbind(x, exp( x[,1]+1.96*x[,2] ))
+  colnames(x) <- c("Estimate","Std. Error","z-value","Pr(>|z|)","Exp(B)","CI lower","CI higher")
+  round(x,3)
+}
+
+# Test of the model
+logisticTest <- function(LogModel) {
+  modelChi <- LogModel$null.deviance - LogModel$deviance
+  chidf <- LogModel$df.null - LogModel$df.residual
+  chisq.prob <- 1 - pchisq(modelChi, chidf)
+  cat("chi2(",chidf,") = ",modelChi,", p = ", chisq.prob, sep="")
+}
+
+# Test the accuracy of prediction
+predictionAccuracy <- function(LogModel, status) {
+  data <- LogModel$data
+  data$prob <- predict(LogModel, type="response")
+  data$pred <- ifelse(data$prob > .5, 1, 0)
+  round( nrow(data[status == data$pred,]) / nrow(data), 2)
 }
 
 # Returns a percentage table
@@ -190,3 +223,10 @@ var.test <- function(x, y, continuous = FALSE){
   }
   return(output)
 }
+
+colnames.missing <- function(df, names) {
+  for(col in names)
+    if(!col %in% colnames(df))
+      print(col)
+}
+

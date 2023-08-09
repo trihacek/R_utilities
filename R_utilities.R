@@ -129,8 +129,10 @@ predictionAccuracy <- function(LogModel, status) {
 }
 
 # Returns a percentage table
-perc <- function(x, round = 1) {
+perc <- function(x, round = 1, na.rm = F) {
   library(plyr)
+  if(isTRUE(na.rm))
+	x <- x[!is.na(x)]
   c <- plyr::count(x)
   total <- sum(c$freq)
   c$perc <- round(c$freq/total*100, round)
